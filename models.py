@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from datetime import date as _date
-from datetime import datetime
-from dataclasses import dataclass, InitVar
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -16,16 +17,22 @@ class DelistedComp:
 class HistDevidend:
     symbol: str
     date: _date
-    label: InitVar[_date]
+    label: str
     adjDividend: float
     dividend: float
-    recordDate: _date
-    paymentDate: _date
-    declarationDate: _date
+    recordDate: _date | None = None
+    paymentDate: _date | None = None
+    declarationDate: _date | None = None
 
-    def __post_init__(self, label: _date):
-        if isinstance(label, str):
-            self.label: _date = datetime.strptime(label, '%B %d, %y')
+    def __post_init__(self):
+        if self.recordDate == '':
+            self.recordDate: _date | None = None
+
+        if self.paymentDate == '':
+            self.paymentDate: _date | None = None
+
+        if self.declarationDate == '':
+            self.declarationDate: _date | None = None
 
 
 HistDevidends = list[HistDevidend]

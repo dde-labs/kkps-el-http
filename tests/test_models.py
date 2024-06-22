@@ -5,14 +5,14 @@ from models import DelistedComps, DelistedComp, HistDevidend, HistDevidends
 
 
 def read_delisted_comp() -> DelistedComps:
-    with open('./local/delisted-comp.json', mode='r', encoding='utf-8') as f:
+    with open('../local/delisted-comp.json', mode='r', encoding='utf-8') as f:
         json_load: list[dict[str, Any]] = json.load(f)
     return [DelistedComp(**data) for data in json_load]
 
 
 def read_hist_devidends() -> HistDevidends:
     with open(
-        './local/stock-dividend-AAPL.json', mode='r', encoding='utf-8'
+        '../local/stock-dividend-AAPL.json', mode='r', encoding='utf-8'
     ) as f:
         data = json.load(f)
     symbol: str = data['symbol']

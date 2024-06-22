@@ -1,9 +1,11 @@
 import os
 import asyncio
-import json
 
 from dotenv import load_dotenv
 import aiohttp
+
+from models import DelistedComp, HistDevidend
+from db import insert_bulk_delisted_comp, insert_bulk_hist_devidends
 
 
 load_dotenv()
@@ -17,10 +19,11 @@ async def hist_devidends_task(session: aiohttp.ClientSession, symbol: str):
         f"?apikey={FMP_API_TOKEN}"
     ) as response:
         data = await response.json()
-    with open(
-        f'local/stock-dividend-{symbol}.json', mode='w', encoding='utf-8'
-    ) as f:
-        json.dump(data, f, indent=4)
+    symbol: str = data['symbol']
+    insert_bulk_hist_devidends([
+        HistDevidend(symbol=symbol, **hist)
+        for hist in data.get('historical', [])
+    ])
 
 
 async def hist_devidends(symbols: tuple[str]):
@@ -37,9 +40,8 @@ async def delisted_comp():
         async with session.get(
                 f"{FMP_BASE_URL}/delisted-companies?apikey={FMP_API_TOKEN}"
         ) as response:
-            data = await response.json()
-    with open('local/delisted-comp.json', mode='w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+            json_load = await response.json()
+    insert_bulk_delisted_comp([DelistedComp(**data) for data in json_load])
 
 
 async def run_all():
@@ -49,11 +51,11 @@ async def run_all():
             delisted_comp(),
             hist_devidends(SYMBOLS),
         ],
-        return_exceptions = True,
+        return_exceptions=True,
     )
     return res
 
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_all)
+    loop.run_until_complete(run_all())
