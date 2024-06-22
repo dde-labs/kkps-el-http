@@ -16,3 +16,7 @@ N
 local/stock-dividend-AAPL.json,f\5\f5f07018124e509930141cc4fe546eb8c576822f
 N
 local/stock-dividend-AAQC.json,8\c\8cc47d82c0dae1622aee32d341153f805a93d7f5
+M
+.container/docker-compose.yml,5\b\5bd181ecd3ce98180000dfbaf56ae6ed50fc3908
+5
+db.py,d\8\d86d66a0d8c35e16e2714322784e39cea9db048a
