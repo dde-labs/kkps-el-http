@@ -1,2 +1,4 @@
 python-dotenv==1.0.1
+
+# Base perf is faster than `httpx`
 aiohttp==3.9.5

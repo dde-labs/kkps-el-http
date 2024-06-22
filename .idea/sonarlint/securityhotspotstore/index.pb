@@ -12,3 +12,7 @@ B
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+N
+local/stock-dividend-AAPL.json,f\5\f5f07018124e509930141cc4fe546eb8c576822f
+N
+local/stock-dividend-AAQC.json,8\c\8cc47d82c0dae1622aee32d341153f805a93d7f5
