@@ -5,6 +5,7 @@
 
 ## Prerequisite
 
-- Getting API token from the FMP
-  - Historical Dividends (https://site.financialmodelingprep.com/developer/docs/historical-stock-dividends-api)
-  - Delisted Companies (https://site.financialmodelingprep.com/developer/docs/delisted-companies-api/)
+- Install Python Dependency requirements, `pip install -r requirements`
+- Getting API token from the FMP and test request the data from below URLs:
+  - [Historical Dividends](https://site.financialmodelingprep.com/developer/docs/historical-stock-dividends-api)
+  - [Delisted Companies](https://site.financialmodelingprep.com/developer/docs/delisted-companies-api/)
