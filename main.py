@@ -42,10 +42,18 @@ async def delisted_comp():
         json.dump(data, f, indent=4)
 
 
-if __name__ == '__main__':
-    SYMBOLS: tuple[str] = ('AAPL', 'AAQC', )
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(
-        # delisted_comp(),
-        hist_devidends(SYMBOLS),
+async def run_all():
+    SYMBOLS: tuple[str] = ('AAPL', 'AAQC',)
+    res = await asyncio.gather(
+        *[
+            delisted_comp(),
+            hist_devidends(SYMBOLS),
+        ],
+        return_exceptions = True,
     )
+    return res
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_all)

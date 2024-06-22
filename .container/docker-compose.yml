@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-  db:
-#    container_name: db
+  mysql:
+    container_name: mysql
     image: mysql
     restart: always
     environment:
@@ -13,7 +13,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - my-db:/var/lib/mysql
+      - mnt-mysql:/var/lib/mysql
 
 volumes:
-  my-db:
+  mnt-mysql:
