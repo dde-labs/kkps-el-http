@@ -48,17 +48,23 @@ libs to `duckdb` or `polars` for DataFrame API.
   Optional keys for dynamic symbol for EL the Historical Dividends data.
 
   ```dotenv
-  FMP_HIST_DIVID_SYMBOLS=AAPL,AAQC
+  FMP_HIST_DIVID_SYMBOLS=AAPL,AAQC,ACP
   ```
 
 - Initial the Tables on Database
   
-  ```shell
+  ```console
   (env) $ python ./src/db.py
+  Creating table hist_devidends: OK
+  Creating table delisted_comp: OK
   ```
 
 - Start Main Program
 
-  ```shell
+  ```console
   (env) $ python ./main.py
+  Success EL: Historical Dividends (AAPL) with 83 rows.
+  Success EL: Historical Dividends (ACP) with 159 rows.
+  Success EL: Historical Dividends (AAQC) with 0 rows.
+  Success EL: Delisted Companies with 100 rows.
   ```

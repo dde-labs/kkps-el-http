@@ -50,7 +50,8 @@ def able_to_connect() -> bool:
         )
         cnx.close()
         return True
-    except DatabaseError:
+    except DatabaseError as err:
+        print(err)
         return False
 
 
