@@ -1,11 +1,12 @@
 import os
+from typing import Iterator
 
 from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector.errors import DatabaseError
 from mysql.connector import errorcode
 
-from models import HistDevidends, DelistedComps
+from models import HistDevidend, DelistedComp
 
 
 load_dotenv()
@@ -75,7 +76,7 @@ def create_tables():
     cnx.close()
 
 
-def insert_bulk_hist_devidends(all_data: HistDevidends):
+def insert_bulk_hist_devidends(all_data: Iterator[HistDevidend]):
     cnx = mysql.connector.connect(
         user=os.getenv('MYSQL_USER'),
         password=os.getenv('MYSQL_PASSWORD'),
@@ -102,13 +103,12 @@ def insert_bulk_hist_devidends(all_data: HistDevidends):
                 data.declarationDate,
             ),
         )
-        # break
     cnx.commit()
     cursor.close()
     cnx.close()
 
 
-def insert_bulk_delisted_comp(all_data: DelistedComps):
+def insert_bulk_delisted_comp(all_data: Iterator[DelistedComp]):
     cnx = mysql.connector.connect(
         user=os.getenv('MYSQL_USER'),
         password=os.getenv('MYSQL_PASSWORD'),
@@ -119,18 +119,13 @@ def insert_bulk_delisted_comp(all_data: DelistedComps):
     add_hist_devidends = (
         "INSERT INTO delisted_comp ("
         "symbol, companyName, exchange, ipoDate, delistedDate ) "
-        "VALUES (%s, %s, %s, %s, %s)"
+        "VALUES (%(symbol)s, %(companyName)s, %(exchange)s, %(ipoDate)s, "
+        "%(delistedDate)s)"
     )
     for data in all_data:
         cursor.execute(
             add_hist_devidends,
-            (
-                data.symbol,
-                data.companyName,
-                data.exchange,
-                data.ipoDate,
-                data.delistedDate,
-            ),
+            data.__dict__,
         )
     cnx.commit()
     cursor.close()

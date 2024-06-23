@@ -20,10 +20,10 @@ async def hist_devidends_task(session: aiohttp.ClientSession, symbol: str):
     ) as response:
         data = await response.json()
     symbol: str = data['symbol']
-    insert_bulk_hist_devidends([
+    insert_bulk_hist_devidends((
         HistDevidend(symbol=symbol, **hist)
         for hist in data.get('historical', [])
-    ])
+    ))
 
 
 async def hist_devidends(symbols: tuple[str]):
@@ -41,7 +41,7 @@ async def delisted_comp():
                 f"{FMP_BASE_URL}/delisted-companies?apikey={FMP_API_TOKEN}"
         ) as response:
             json_load = await response.json()
-    insert_bulk_delisted_comp([DelistedComp(**data) for data in json_load])
+    insert_bulk_delisted_comp((DelistedComp(**data) for data in json_load))
 
 
 async def run_all():
