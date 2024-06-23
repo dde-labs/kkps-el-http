@@ -1,12 +1,16 @@
 # KKPS: EL-Http
 
 **KKPS Assignment** that Extract & Load data from the [FMP](https://site.financialmodelingprep.com/developer/docs) to Some Local
-Database.
+Database (This example use **MySQL**).
 
 It able to use native libs for this case if it does not have any transform or prepare
 business logic on this data. If the requirement want to scale the code that able
 to implement any business logic in the future, it will refactor the code from native
 libs to `duckdb` or `polars` for DataFrame API.
+
+> [!NOTE]
+> When I implement with native libs it also improve performance and less deps. So,
+> it uses time to develop this EL around ~ 6-7 hours (1 MD).
 
 ## Prerequisite
 
