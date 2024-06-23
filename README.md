@@ -28,8 +28,37 @@ libs to `duckdb` or `polars` for DataFrame API.
     docker compose -f ./.container/docker-compose.yml --env-file ./.env up -d
     ```
 
-  - Drop
+  - Drop all resources without image
   
     ```shell
-    docker compose -f ./.container/docker-compose.yml --env-file ./.env down
+    docker compose -f ./.container/docker-compose.yml --env-file ./.env down -v
     ```
+
+## Getting Started
+
+- Create the dotenv file, `.env` and define the the value of necessary keys:
+
+  ```dotenv
+  FMP_API_TOKEN=????
+  MYSQL_USER=????
+  MYSQL_PASSWORD=????
+  MYSQL_ROOT_PASSWORD=????
+  ```
+  
+  Optional keys for dynamic symbol for EL the Historical Dividends data.
+
+  ```dotenv
+  FMP_HIST_DIVID_SYMBOLS=AAPL,AAQC
+  ```
+
+- Initial the Tables on Database
+  
+  ```shell
+  (env) $ python ./src/db.py
+  ```
+
+- Start Main Program
+
+  ```shell
+  (env) $ python ./main.py
+  ```

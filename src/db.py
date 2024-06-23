@@ -6,7 +6,10 @@ import mysql.connector
 from mysql.connector.errors import DatabaseError
 from mysql.connector import errorcode
 
-from models import HistDevidend, DelistedComp
+try:
+    from .models import HistDevidend, DelistedComp
+except ImportError:
+    from models import HistDevidend, DelistedComp
 
 
 load_dotenv()
@@ -51,7 +54,7 @@ def able_to_connect() -> bool:
         return False
 
 
-def create_tables():
+def create_tables() -> None:
     cnx = mysql.connector.connect(
         user=os.getenv('MYSQL_USER'),
         password=os.getenv('MYSQL_PASSWORD'),
@@ -76,7 +79,7 @@ def create_tables():
     cnx.close()
 
 
-def insert_bulk_hist_devidends(all_data: Iterator[HistDevidend]):
+def insert_bulk_hist_devidends(all_data: Iterator[HistDevidend]) -> int:
     cnx = mysql.connector.connect(
         user=os.getenv('MYSQL_USER'),
         password=os.getenv('MYSQL_PASSWORD'),
@@ -85,11 +88,12 @@ def insert_bulk_hist_devidends(all_data: Iterator[HistDevidend]):
     )
     cursor = cnx.cursor()
     add_hist_devidends = (
-        "INSERT INTO hist_devidends ("
+        "INSERT INTO hist_devidends ( "
         "symbol, date, label, adjDividend, dividend, recordDate, paymentDate, "
         "declarationDate ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     )
-    for data in all_data:
+    rc: int = 0
+    for rc, data in enumerate(all_data, start=1):
         cursor.execute(
             add_hist_devidends,
             (
@@ -106,9 +110,10 @@ def insert_bulk_hist_devidends(all_data: Iterator[HistDevidend]):
     cnx.commit()
     cursor.close()
     cnx.close()
+    return rc
 
 
-def insert_bulk_delisted_comp(all_data: Iterator[DelistedComp]):
+def insert_bulk_delisted_comp(all_data: Iterator[DelistedComp]) -> int:
     cnx = mysql.connector.connect(
         user=os.getenv('MYSQL_USER'),
         password=os.getenv('MYSQL_PASSWORD'),
@@ -117,12 +122,13 @@ def insert_bulk_delisted_comp(all_data: Iterator[DelistedComp]):
     )
     cursor = cnx.cursor()
     add_hist_devidends = (
-        "INSERT INTO delisted_comp ("
+        "INSERT INTO delisted_comp ( "
         "symbol, companyName, exchange, ipoDate, delistedDate ) "
         "VALUES (%(symbol)s, %(companyName)s, %(exchange)s, %(ipoDate)s, "
         "%(delistedDate)s)"
     )
-    for data in all_data:
+    rc: int = 0
+    for rc, data in enumerate(all_data, start=1):
         cursor.execute(
             add_hist_devidends,
             data.__dict__,
@@ -130,7 +136,13 @@ def insert_bulk_delisted_comp(all_data: Iterator[DelistedComp]):
     cnx.commit()
     cursor.close()
     cnx.close()
+    return rc
 
 
 if __name__ == '__main__':
-    create_tables()
+    if able_to_connect():
+        create_tables()
+    else:
+        raise ValueError(
+            "Database does not connection with current configuration."
+        )
