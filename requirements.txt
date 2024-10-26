@@ -4,4 +4,4 @@ python-dotenv==1.0.1
 aiohttp==3.9.5
 
 # Standard Connector that provided from MySQL
-mysql-connector-python==8.4.0
+mysql-connector-python==9.1.0
