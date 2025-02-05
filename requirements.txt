@@ -1,7 +1,7 @@
 python-dotenv==1.0.1
 
 # Base perf is faster than `httpx`
-aiohttp==3.9.5
+aiohttp==3.10.11
 
 # Standard Connector that provided from MySQL
 mysql-connector-python==9.1.0
